@@ -5,10 +5,12 @@ import LoginForm from "./components/LoginForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
+import { showNotification } from "./reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
 const App = () => {
+  const dispatch = useDispatch();
   const [blogs, setBlogs] = useState([]);
-  const [notification, setNotification] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -30,22 +32,16 @@ const App = () => {
       window.localStorage.setItem("loggedBlogUser", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
-      setNotification({
-        message: `Logged in as ${user.name}`,
-        type: "notification",
-      });
+      dispatch(showNotification(`Logged in as ${user.name}`, 5));
     } catch (error) {
-      setNotification({ message: "Wrong username or password", type: "error" });
+      dispatch(showNotification("Wrong username or password", 5));
     }
   };
 
   const handleLogout = () => {
     window.localStorage.removeItem("loggedBlogUser");
     setUser(null);
-    setNotification({
-      message: "Logged out successfully",
-      type: "notification",
-    });
+    dispatch(showNotification("Logged out successfully", 5));
   };
 
   const handleCreateBlog = async (newBlog) => {
@@ -53,15 +49,9 @@ const App = () => {
       const createdBlog = await blogService.create(newBlog);
       createdBlog.user = user;
       setBlogs([...blogs, createdBlog]);
-      setNotification({
-        message: `Blog "${newBlog.title}" added`,
-        type: "notification",
-      });
+      dispatch(showNotification(`Blog "${newBlog.title}" added`, 5));
     } catch (error) {
-      setNotification({
-        message: "Please fill all input fields",
-        type: "error",
-      });
+      dispatch(showNotification("Please fill all input fields", 5));
     }
   };
 
@@ -76,7 +66,7 @@ const App = () => {
       updatedBlogs.sort((a, b) => b.likes - a.likes);
       setBlogs(updatedBlogs);
     } catch (error) {
-      setNotification({ message: "Error liking blog", type: "error" });
+      dispatch(showNotification("Error liking blog", 5));
     }
   };
 
@@ -105,12 +95,7 @@ const App = () => {
 
   return (
     <div>
-      {notification && (
-        <Notification
-          message={notification}
-          setNotification={setNotification}
-        />
-      )}
+      <Notification />
       {!user && <LoginForm handleLogin={handleLogin} />}
       {user && blogForm()}
     </div>
