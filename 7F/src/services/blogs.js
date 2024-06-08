@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "/api/blogs";
+const baseUrl = "http://localhost:3003/api/blogs";
 
 let token = null;
 
@@ -25,15 +25,42 @@ const update = async (id, updatedObject) => {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await axios.put(`${baseUrl}/${id}`, updatedObject, config);
-  return response.data;
+  try {
+    const response = await axios.put(`${baseUrl}/${id}`, updatedObject, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating blog:", error);
+    throw error;
+  }
+};
+
+const getById = async (id) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching blog by ID:", error);
+    throw error;
+  }
 };
 
 const remove = async (id) => {
   const config = {
     headers: { Authorization: token },
   };
-  await axios.delete(`${baseUrl}/${id}`, config);
+  try {
+    await axios.delete(`${baseUrl}/${id}`, config);
+  } catch (error) {
+    console.error("Error deleting blog:", error);
+    throw error;
+  }
 };
 
-export default { getAll, create, update, setToken, remove };
+export default {
+  getAll,
+  create,
+  update,
+  setToken,
+  getById,
+  remove,
+};

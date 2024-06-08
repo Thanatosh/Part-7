@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogReducer";
 
-const BlogForm = ({ handleCreateBlog }) => {
+const BlogForm = () => {
+  const dispatch = useDispatch();
   const [newBlogTitle, setNewBlogTitle] = useState("");
   const [newBlogAuthor, setNewBlogAuthor] = useState("");
   const [newBlogUrl, setNewBlogUrl] = useState("");
@@ -8,20 +11,17 @@ const BlogForm = ({ handleCreateBlog }) => {
   const hideWhenVisible = { display: blogFormVisible ? "none" : "" };
   const showWhenVisible = { display: blogFormVisible ? "" : "none" };
 
-  const handleSubmit = (event) => {
+  const addBlog = (event) => {
     event.preventDefault();
-    try {
-      handleCreateBlog({
-        title: newBlogTitle,
-        author: newBlogAuthor,
-        url: newBlogUrl,
-      });
-      setNewBlogTitle("");
-      setNewBlogAuthor("");
-      setNewBlogUrl("");
-    } catch (error) {
-      console.error("Error creating blog:", error);
-    }
+    const blog = {
+      title: newBlogTitle,
+      author: newBlogAuthor,
+      url: newBlogUrl,
+    };
+    dispatch(createBlog(blog));
+    setNewBlogTitle("");
+    setNewBlogAuthor("");
+    setNewBlogUrl("");
   };
 
   return (
@@ -38,7 +38,7 @@ const BlogForm = ({ handleCreateBlog }) => {
         </button>
       </div>
       <div style={showWhenVisible}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={addBlog}>
           <div>
             title:{" "}
             <input
