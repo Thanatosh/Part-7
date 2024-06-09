@@ -1,23 +1,11 @@
 import React, { useState } from "react";
-import blogService from "../services/blogs";
 
-const Blog = ({ blog, handleLike, user }) => {
+const Blog = ({ blog, handleLike, handleDelete, user }) => {
   const [showDetails, setShowDetails] = useState(false);
   const isCreator = user && user.username === blog.user.username;
 
   const toggleDetails = () => {
     setShowDetails(!showDetails);
-  };
-
-  const handleDelete = async () => {
-    if (window.confirm(`Do you wish to remove: "${blog.title}"?`)) {
-      try {
-        await blogService.remove(blog.id);
-        setBlogs(blogs.filter((b) => b.id !== blog.id));
-      } catch (error) {
-        console.log("Error deleting blog:", error);
-      }
-    }
   };
 
   return (
@@ -33,13 +21,16 @@ const Blog = ({ blog, handleLike, user }) => {
           <p>Url: {blog.url}</p>
           <p className="likes">
             Likes: {blog.likes}{" "}
-            <button style={{ marginLeft: "6px" }} onClick={handleLike}>
+            <button
+              style={{ marginLeft: "6px" }}
+              onClick={() => handleLike(blog.id)}
+            >
               Like
             </button>
           </p>
           <p>Added by: {blog.user.name}</p>
           {isCreator && (
-            <button id="remove-button" onClick={handleDelete}>
+            <button id="remove-button" onClick={() => handleDelete(blog.id)}>
               Delete
             </button>
           )}

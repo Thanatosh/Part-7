@@ -7,7 +7,7 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import { showNotification } from "./reducers/notificationReducer";
-import { initializeBlogs, likeBlog } from "./reducers/blogReducer";
+import { initializeBlogs, likeBlog, deleteBlog } from "./reducers/blogReducer";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -49,6 +49,10 @@ const App = () => {
     dispatch(likeBlog(blogId));
   };
 
+  const handleDelete = (blogId) => {
+    dispatch(deleteBlog(blogId));
+  };
+
   const blogForm = () => (
     <div>
       <h2>Blogs</h2>
@@ -64,7 +68,8 @@ const App = () => {
           key={blog.id}
           blog={blog}
           user={user}
-          handleLike={() => handleLike(blog.id)}
+          handleLike={handleLike}
+          handleDelete={handleDelete}
         />
       ))}
     </div>
