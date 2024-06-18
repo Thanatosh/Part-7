@@ -3,6 +3,11 @@ const baseUrl = "http://localhost:3003/api/blogs";
 
 let token = null;
 
+const addComment = async (id, comment) => {
+  const response = await axios.post(`${baseUrl}/${id}/comments`, { comment });
+  return response.data;
+};
+
 const setToken = (newToken) => {
   token = `Bearer ${newToken}`;
 };
@@ -63,4 +68,5 @@ export default {
   setToken,
   getById,
   remove,
+  addComment,
 };

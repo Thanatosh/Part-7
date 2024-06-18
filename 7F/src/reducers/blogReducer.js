@@ -34,7 +34,7 @@ export const fetchBlogById = (id) => async (dispatch) => {
 
 export const likeBlog = (id) => async (dispatch, getState) => {
   const blog = getState().blogs.find((b) => b.id === id);
-  const updatedBlog = { ...blog, likes: blog.likes + 1 };
+  const updatedBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id };
   const response = await blogService.update(id, updatedBlog);
   dispatch(updateBlog(response));
   dispatch(fetchBlogById(id));
@@ -60,6 +60,13 @@ export const createBlog = (content) => async (dispatch) => {
   dispatch(showNotification(`New blog created: ${newBlog.title}`, 5));
   const blogs = await blogService.getAll();
   dispatch(setBlogs(blogs));
+};
+
+export const addCommentToBlog = (id, comment) => async (dispatch) => {
+  const updatedBlog = await blogService.addComment(id, comment);
+  dispatch(updateBlog(updatedBlog));
+  dispatch(fetchBlogById(id));
+  dispatch(showNotification(`Comment saved on: ${blog.title}`, 5));
 };
 
 export default blogSlice.reducer;
