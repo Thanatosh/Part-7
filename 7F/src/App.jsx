@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import UserList from "./components/UserList";
 import UserDetail from "./components/UserDetail";
+import BlogDetail from "./components/BlogDetail";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Blog from "./components/Blog";
@@ -8,7 +9,7 @@ import BlogForm from "./components/BlogForm";
 import LoginForm from "./components/LoginForm";
 import blogService from "./services/blogs";
 import Notification from "./components/Notification";
-import { initializeBlogs, likeBlog, deleteBlog } from "./reducers/blogReducer";
+import { initializeBlogs } from "./reducers/blogReducer";
 import { loginUser, logoutUser, setUser } from "./reducers/loginReducer";
 
 const App = () => {
@@ -37,14 +38,6 @@ const App = () => {
     dispatch(logoutUser());
   };
 
-  const handleLike = (blogId) => {
-    dispatch(likeBlog(blogId));
-  };
-
-  const handleDelete = (blogId) => {
-    dispatch(deleteBlog(blogId));
-  };
-
   const blogForm = () => (
     <div>
       <h2>Blogs</h2>
@@ -56,13 +49,7 @@ const App = () => {
       </p>
       <BlogForm />
       {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          user={user}
-          handleLike={handleLike}
-          handleDelete={handleDelete}
-        />
+        <Blog key={blog.id} blog={blog} />
       ))}
     </div>
   );
@@ -90,6 +77,7 @@ const App = () => {
             }
           />
           <Route path="/users/:id" element={<UserDetail />} />
+          <Route path="/blogs/:id" element={<BlogDetail />} />
         </Routes>
       </div>
     </Router>
