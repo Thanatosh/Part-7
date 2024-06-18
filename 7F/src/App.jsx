@@ -1,3 +1,6 @@
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import UserList from "./components/UserList";
+import UserDetail from "./components/UserDetail";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Blog from "./components/Blog";
@@ -65,11 +68,31 @@ const App = () => {
   );
 
   return (
-    <div>
-      <Notification />
-      {!user && <LoginForm handleLogin={handleLogin} />}
-      {user && blogForm()}
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <Link to="/blogs">Blogs </Link>
+          <Link to="/users">Users </Link>
+        </nav>
+        <Notification />
+        <Routes>
+          <Route path="/users" element={<UserList />} />
+          <Route
+            path="/blogs"
+            element={
+              user ? blogForm() : <LoginForm handleLogin={handleLogin} />
+            }
+          />
+          <Route
+            path="/"
+            element={
+              user ? blogForm() : <LoginForm handleLogin={handleLogin} />
+            }
+          />
+          <Route path="/users/:id" element={<UserDetail />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
