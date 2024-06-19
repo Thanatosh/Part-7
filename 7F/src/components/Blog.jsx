@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Blog = ({ blog }) => {
   return (
-    <div className="blog-container">
+    <div className="blog-details">
       <Link to={`/blogs/${blog.id}`}>
         <strong>{blog.title}</strong>
       </Link>{" "}

@@ -46,7 +46,7 @@ const BlogDetail = () => {
   const isCreator = user && user.username === blog.user.username;
 
   return (
-    <div>
+    <div className="blog-details">
       <h2>{blog.title}</h2>
       <p>Author: {blog.author}</p>
       <p>Url: {blog.url}</p>
@@ -62,23 +62,23 @@ const BlogDetail = () => {
           Delete
         </button>
       )}
-
-      <h3>Comments</h3>
-      <ul>
-        {blog.comments.map((comment, index) => (
-          <li key={index}>{comment}</li>
-        ))}
-      </ul>
-
-      <form onSubmit={handleCommentSubmit}>
-        <input
-          type="text"
-          value={comment}
-          onChange={handleCommentChange}
-          placeholder="Add a comment"
-        />
-        <button type="submit">Add Comment</button>
-      </form>
+      <div className="comment-section">
+        <h3>Comments</h3>
+        <ul className="comments-ul">
+          {blog.comments.map((comment, index) => (
+            <li key={index}>{comment}</li>
+          ))}
+        </ul>
+        <form className="comment-form" onSubmit={handleCommentSubmit}>
+          <input
+            type="text"
+            value={comment}
+            onChange={handleCommentChange}
+            placeholder="Add a comment"
+          />
+          <button type="submit">Add Comment</button>
+        </form>
+      </div>
     </div>
   );
 };

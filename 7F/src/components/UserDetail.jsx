@@ -21,10 +21,10 @@ const UserDetail = () => {
   }
 
   return (
-    <div>
+    <div className="user-details">
       <h2>{user.name}</h2>
       <h3>Added blogs</h3>
-      <ul>
+      <ul className="blogs-ul">
         {user.blogs.map((blog) => (
           <li key={blog.id}>{blog.title}</li>
         ))}

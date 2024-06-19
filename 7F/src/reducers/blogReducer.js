@@ -65,8 +65,8 @@ export const createBlog = (content) => async (dispatch) => {
 export const addCommentToBlog = (id, comment) => async (dispatch) => {
   const updatedBlog = await blogService.addComment(id, comment);
   dispatch(updateBlog(updatedBlog));
+  dispatch(showNotification(`Comment saved on: ${updatedBlog.title}`, 5));
   dispatch(fetchBlogById(id));
-  dispatch(showNotification(`Comment saved on: ${blog.title}`, 5));
 };
 
 export default blogSlice.reducer;

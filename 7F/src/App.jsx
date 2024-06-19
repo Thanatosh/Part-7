@@ -41,12 +41,6 @@ const App = () => {
   const blogForm = () => (
     <div>
       <h2>Blogs</h2>
-      <p>
-        {user.name} logged in{" "}
-        <button type="button" onClick={handleLogout}>
-          Logout
-        </button>
-      </p>
       <BlogForm />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
@@ -56,10 +50,20 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <nav>
-          <Link to="/blogs">Blogs </Link>
-          <Link to="/users">Users </Link>
+      <div className="container">
+        <nav className="navbar">
+          <div className="nav-links">
+            <Link to="/blogs">Blogs </Link>
+            <Link to="/users">Users </Link>
+          </div>
+          {user && (
+            <div className="nav-user">
+              <span>{user.name} logged in</span>
+              <button id="logout-button" type="button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          )}
         </nav>
         <Notification />
         <Routes>
